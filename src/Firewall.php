@@ -366,4 +366,17 @@ class Firewall
     {
         return $this->dataRepository->getGeoIp();
     }
+
+    /**
+     * Remove an IP cached value
+     *
+     * @param string $ip
+     * @return bool whether the cached item was successfully deleted.
+     */
+    public function forgetInCache($ip)
+    {
+        $this->dataRepository->ipList()->cache()->forget($ip);
+        $deleted = !$this->dataRepository->ipList()->cache()->has($ip);
+        return $deleted;
+    }
 }
