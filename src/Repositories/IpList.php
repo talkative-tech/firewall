@@ -395,9 +395,12 @@ class IpList
             return $this->cache()->get($ip);
         }
 
-        if ($model = $this->findIp($ip)) {
-            $this->cache()->remember($model);
-        }
+        $model = $this->findIp($ip) ?: $this->makeModel([
+            "ip_address" => $ip,
+            "whitelisted" => true,
+        ]);
+
+        $this->cache()->remember($model);
 
         return $model;
     }
